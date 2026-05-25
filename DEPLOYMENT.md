@@ -102,5 +102,34 @@ python main.py
 *   It will switch to **ROAMING** and move around.
 *   Once a human is seen, it will **APPROACH** and initiate the **INTERACTION**.
 
-> [!TIP]
-> **Headless Mode:** If you aren't using a monitor on the Pi, go to `config.py` and set `DEBUG_DISPLAY = False`.
+## 🛠️ 7. Troubleshooting (If Hardware doesn't move)
+
+If the script says `✅ Arduino serial connected` but the robot doesn't move:
+
+### A. Common Ground (Most Important!)
+The Raspberry Pi and the Arduino **MUST share a common Ground (GND)**.
+*   Connect any **GND** pin on the Pi (e.g., Pin 6, 9, 14, 20, or 25) to a **GND** pin on the Arduino.
+*   Without this, the electrical signals have no reference point and will be ignored.
+
+### B. Serial Console Conflict
+The Pi's internal Linux system might be using the same UART pins for a "Login Shell".
+1.  Run `ls -l /dev/serial0` (it should point to `ttyAMA0` or `ttyS0`).
+2.  Open `/boot/firmware/cmdline.txt` (or `/boot/cmdline.txt`).
+3.  **Remove** any part that says `console=serial0,115000` or `console=ttyAMA0,115000`.
+4.  Reboot.
+
+### C. Pin Swap
+Double check your TX/RX wiring:
+*   **Pi TX (GPIO 14 / Pin 8)** → **Arduino RX (Pin 0)**
+*   **Pi RX (GPIO 15 / Pin 10)** ← **Voltage Divider** ← **Arduino TX (Pin 1)**
+
+### D. Verify with Diagnostic Script
+Run this tool I created to find the working port:
+```bash
+python diag_serial.py
+```
+If it says `SUCCESS!`, copy the port name into `config.py` under `SERIAL_PORT`.
+
+### E. Power
+Ensure the Arduino has enough power to drive the motors. If the Arduino is powered only by the Pi's 5V pin, it might reboot when motors draw current. Use a battery or a separate 5V regulator for the motors.
+
