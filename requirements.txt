@@ -1,0 +1,14 @@
+opencv-python-headless
+face-recognition
+numpy
+requests
+pygame
+ultralytics
+ollama
+piper-tts
+faster-whisper
+sounddevice
+scipy
+pyserial
+picamera2
+sqlite3
