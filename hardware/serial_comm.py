@@ -4,7 +4,7 @@ Arduino Serial Communication
 Hardware UART connection via GPIO pins (Pi TX → Arduino RX direct,
 Arduino TX → voltage divider → Pi RX).
 
-Port: /dev/serial0   Baud: 9600
+Port: /dev/ttyAMA0   Baud: 9600
 
 Thread-safe singleton — all modules share one instance.
 """

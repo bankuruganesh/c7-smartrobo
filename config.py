@@ -36,9 +36,9 @@ os.makedirs(VISITORS_DIR, exist_ok=True)
 
 # ─── Serial / Arduino ───────────────────────────────────────
 #  Hardware UART via GPIO pins (voltage divider on Pi RX ← Arduino TX)
-SERIAL_PORT      = "/dev/serial0"
+SERIAL_PORT      = "/dev/ttyAMA0"
 SERIAL_BAUD      = 9600
-SERIAL_TIMEOUT   = 0.1        # read timeout in seconds
+SERIAL_TIMEOUT   = 1.0        # read timeout in seconds
 
 # ─── YOLO ────────────────────────────────────────────────────
 YOLO_MODEL_PATH  = "yolov8n.pt"
