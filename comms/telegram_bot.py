@@ -19,7 +19,8 @@ def drain_updates():
     global _last_update_id
     try:
         resp = requests.get(
-            f"https://api.telegram.org/bot{config.TELEGRAM_TOKEN}/getUpdates"
+            f"https://api.telegram.org/bot{config.TELEGRAM_TOKEN}/getUpdates",
+            timeout=5
         ).json()
         if resp.get("result"):
             _last_update_id = resp["result"][-1]["update_id"]

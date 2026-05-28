@@ -58,8 +58,13 @@ class Camera:
         """
         if self._use_picam:
             frame = self._picam.capture_array()
-            bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-            rgb = frame   # picamera2 already gives RGB
+            # Picamera2 formats might be 4-channel (XBGR or BGRA) depending on internal stream
+            if len(frame.shape) == 3 and frame.shape[2] == 4:
+                rgb = cv2.cvtColor(frame, cv2.COLOR_BGRA2RGB)
+                bgr = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
+            else:
+                rgb = frame
+                bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
             return bgr, rgb
 
         ret, frame = self._cap.read()

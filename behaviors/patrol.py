@@ -79,14 +79,22 @@ class PatrolBehavior:
                 print("  👁️ Person detected during roam!")
                 return True
 
-        # Obstacle avoidance
-        distance = self._motors.get_distance()
+        # Obstacle avoidance (throttle ultrasonic checks)
+        now = time.time()
+        if not hasattr(self, '_last_dist_time'):
+            self._last_dist_time = 0.0
+            self._last_dist = -1
+            
+        if now - self._last_dist_time > 0.4:
+            self._last_dist = self._motors.get_distance()
+            self._last_dist_time = now
 
-        if 0 < distance < config.OBSTACLE_THRESHOLD_CM:
-            print(f"  🚧 Obstacle at {distance}cm — turning...")
+        if 0 < self._last_dist < config.OBSTACLE_THRESHOLD_CM:
+            print(f"  🚧 Obstacle at {self._last_dist}cm — turning...")
             self._motors.stop()
             time.sleep(0.1)
             self._motors.timed_turn("R", 0.6)
+            self._last_dist_time = 0.0  # Force re-check after turning
         else:
             self._motors.forward()
 

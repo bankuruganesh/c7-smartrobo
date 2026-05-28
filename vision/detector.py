@@ -39,7 +39,7 @@ class PersonDetector:
             bgr_frame,
             verbose=False,
             imgsz=config.YOLO_IMGSZ,
-            half=True,
+            half=False,
         )
 
         detections = []

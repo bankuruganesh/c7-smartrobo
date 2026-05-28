@@ -88,4 +88,4 @@ ROAM_FORWARD_SECONDS  = 2.0   # how long to drive forward between scans
 ROAM_RESCAN_INTERVAL  = 8.0   # seconds between full servo sweeps while roaming
 
 # ─── Debug ───────────────────────────────────────────────────
-DEBUG_DISPLAY = True           # show cv2 window with bounding boxes
+DEBUG_DISPLAY = True          # show cv2 window with bounding boxes

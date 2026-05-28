@@ -61,8 +61,8 @@ def listen() -> str:
         )
         sd.wait()
 
-        raw_path   = "temp_audio.wav"
-        clean_path = "clean_audio.wav"
+        raw_path   = os.path.join(config.BASE_DIR, "temp_audio.wav")
+        clean_path = os.path.join(config.BASE_DIR, "clean_audio.wav")
 
         # Save raw mic audio
         wav_write(raw_path, config.STT_SAMPLE_RATE, audio)

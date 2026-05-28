@@ -109,12 +109,19 @@ class ArduinoSerial:
         Returns distance in cm, or -1 on error.
         """
         self.send("U")
-        line = self.read_line(timeout=0.3)
-        if line and line.startswith("DIST:"):
-            try:
-                return int(line.split(":")[1])
-            except (ValueError, IndexError):
-                pass
+        
+        # Arduino echoes "Received: U" before sending "DIST:X", so we might need
+        # to read a couple of lines before hitting the actual target.
+        start_time = time.time()
+        while time.time() - start_time < 0.5:
+            line = self.read_line(timeout=0.1)
+            if not line:
+                continue
+            if line.startswith("DIST:"):
+                try:
+                    return int(line.split(":")[1])
+                except (ValueError, IndexError):
+                    pass
         return -1
 
     # ── Cleanup ───────────────────────────────────────────────

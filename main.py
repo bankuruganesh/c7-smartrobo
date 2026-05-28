@@ -29,6 +29,7 @@ from behaviors.patrol import PatrolBehavior
 from behaviors.approach import ApproachBehavior
 from behaviors.interaction import InteractionBehavior
 from comms import tts
+from data.database import init_db
 
 
 # ═════════════════════════════════════════════════════════════
@@ -58,6 +59,9 @@ def main():
     print("═" * 60)
     print("  C7 Smart Patrol Robot — Booting")
     print("═" * 60)
+
+    # ── 0. Initialize Database ────────────────────────────────
+    init_db()
 
     # ── 1. Initialise Hardware ────────────────────────────────
     serial_conn = ArduinoSerial()
@@ -208,11 +212,14 @@ def main():
                 (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 220, 220), 2,
             )
-            cv2.imshow("Smart Robot", bgr_frame)
-
-            key = cv2.waitKey(1) & 0xFF
-            if key == ord("q"):
-                break
+            try:
+                cv2.imshow("Smart Robot", bgr_frame)
+                key = cv2.waitKey(1) & 0xFF
+                if key == ord("q"):
+                    break
+            except Exception as e:
+                print(f"⚠️ Display error (headless mode?): {e}")
+                config.DEBUG_DISPLAY = False
 
         # Small delay to avoid CPU spinning
         time.sleep(0.02)
